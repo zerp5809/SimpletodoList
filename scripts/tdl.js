@@ -38,7 +38,7 @@ function refresh(){
 		place = document.createElement("span");
 		place.setAttribute("id", 'placeholder');
 		li.appendChild(place);
-		submit(i+1, myArray.valueOf(i));
+		submit(i+1);
 	}
 	addNew();
 }
@@ -79,20 +79,21 @@ function edit(btn){
 	var id = btn.id;
 	document.getElementById()
 }
-function submit(length, info){
+function submit(length){
 	var item;
 	var lengtha;
-	if (info==null){
+	if (length==null){
 		lengtha = myArray.length+1;
 		item = document. createTextNode(document.getElementById('text').value + ' ');
 		myArray.push(item)
 
 	}
 	else{
-		console.log(info)
 		lengtha = length;
-		item = document. createTextNode(info + ' ');
-		myArray.push()
+		var arrayI = lengtha-1;
+		var info = myArray[lengtha-1];
+		
+		item = document. createTextNode(info.data);
 	}
 	place.appendChild(item);
 	var btnDone = document.createElement("input");
