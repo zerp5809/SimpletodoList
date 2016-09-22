@@ -76,26 +76,52 @@ function del(btn){
 	refresh();
 }
 function edit(btn){
+	var edit = true;
 	var id = btn.id;
-	document.getElementById()
+	var text = document.getElementById(id + "p");
+	var textbox = document.createElement("input");
+	var li = document.getElementById(id);
+	document.getElementById(id + "Don").remove();
+	document.getElementById(id + "Del").remove();
+	document.getElementById(id + "Edi").remove(); 
+	textbox.setAttribute("type", 'text');
+	textbox.setAttribute("value", 'text');
+	textbox.setAttribute("Id", 'text');
+	var submitbutton = document.createElement("input");
+	submitbutton.setAttribute("type", 'button');
+	submitbutton.setAttribute("value", 'Ok');
+	submitbutton.setAttribute("name", 'button');
+	submitbutton.setAttribute("id", 'btnSubmit');
+	submitbutton.setAttribute("onClick", "submit(id, edit)")
+	//Append the elements in page (in span).
+	li.appendChild(textbox);
+	li.appendChild(submitbutton);
+	text.remove();
+
 }
-function submit(length){
+function submit(length, edit){
+	edit = this.edit;
 	var item;
-	var lengtha;
+	var lengtha = length;
+	var index="item" + lengtha;
 	if (length==null){
-		lengtha = myArray.length+1;
+		lengtha = myArray.length+1
+		index="item" + lengtha;
 		item = document. createTextNode(document.getElementById('text').value + ' ');
 		myArray.push(item)
-
+		place.appendChild(item);
+	}
+	else if(edit == true){
+		item = document. createTextNode(document.getElementById('text').value + ' ');
+		place = document.getElementById(index + "p");
 	}
 	else{
-		lengtha = length;
 		var arrayI = lengtha-1;
 		var info = myArray[lengtha-1];
-		
 		item = document. createTextNode(info.data);
+		place.appendChild(item);
 	}
-	place.appendChild(item);
+	
 	var btnDone = document.createElement("input");
 	btnDone.setAttribute("type", 'button');
 	btnDone.setAttribute("value", 'Done');
@@ -106,15 +132,21 @@ function submit(length){
 	btnDelete.setAttribute("value", 'Delete');
 	btnDelete.setAttribute("name", 'btnDelete');
 	btnDelete.setAttribute("onClick", 'del(this)');
-	var index="item" + lengtha;
+	var btnEdit = document.createElement("input");
+	btnEdit.setAttribute("type", 'button');
+	btnEdit.setAttribute("value", 'Edit');
+	btnEdit.setAttribute("name", 'btnEdit');
+	btnEdit.setAttribute("onClick", 'edit(this)');
 	console.log(index);
 	var li =document.getElementById(index);
 	console.log(li);
 	place.setAttribute("id", index+"p");
-	btnDone.setAttribute("id", index);
-	btnDelete.setAttribute("id", index);
+	btnDone.setAttribute("id", index + "Don");
+	btnDelete.setAttribute("id", index + "Del");
+	btnEdit.setAttribute("id", index + "Edi");
 	li.appendChild(btnDone);
 	li.appendChild(btnDelete);
+	li.appendChild(btnEdit);
 	if (info == null){	
 		text.remove();
 		document.getElementById("btnSubmit").remove();
@@ -123,7 +155,7 @@ function submit(length){
 		
 }
 var lengtha 
-function addbuttond(){
+function addbuttond(id){
 	//create new elements
 	var textbox = document.createElement("input");
 	textbox.setAttribute("type", 'text');
@@ -134,7 +166,7 @@ function addbuttond(){
 	submitbutton.setAttribute("value", 'Ok');
 	submitbutton.setAttribute("name", 'button');
 	submitbutton.setAttribute("id", 'btnSubmit');
-	submitbutton.setAttribute("onClick", "submit(null, null)")
+	submitbutton.setAttribute("onClick", "submit(null)")
 	//Append the elements in page (in span).
 	place.appendChild(textbox);
 	place.appendChild(submitbutton);
