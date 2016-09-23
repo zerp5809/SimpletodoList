@@ -24,13 +24,13 @@ function refresh(){
 	document.getElementById("list").remove();
 	list = document.createElement("ul");
 	list.setAttribute("id","list");
-	console.log(container);
+	//console.log(container);
 	container.appendChild(list);
 	var lengtha = myArray.length;
 	var index;
 	//var li = document.createElement("li");
 	//li.setAttribute("id","item1");
-	console.log(lengtha);
+	//console.log(lengtha);
 	for (var i = 0; i<lengtha ; i++) {
 		var li = document.createElement("li"); 
 		index = i + 1;
@@ -45,7 +45,7 @@ function refresh(){
 }
 function notDone(btn){
 	var id = btn.id;
-	console.log(id);
+	//console.log(id);
 	document.getElementById(id + "p").setAttribute("class", "notDone");
 	btnDone = document.createElement("Input");
 	btnDone.setAttribute("type", 'button');
@@ -56,16 +56,16 @@ function notDone(btn){
 	btn.remove();
 }
 function done(btn){
-	console.log(btn);
+	//console.log(btn);
 	var id = btn.id.substring(0,btn.id.indexOf('Don'));
-	console.log(id);
+	//console.log(id);
 	document.getElementById(id + "p").setAttribute("class", "done");
 	var btnNotDone = document.createElement("Input");
 	btnNotDone.setAttribute("type", 'button');
 	btnNotDone.setAttribute("onClick", 'notDone(this)');
 	btnNotDone.setAttribute("value", 'Not Done');
 	btnNotDone.setAttribute("id", id);
-	console.log(id);
+	//console.log(id);
 	document.getElementById(id + "p").appendChild(btnNotDone);
 	btn.remove();
 }
@@ -74,7 +74,7 @@ function del(btn){
 	document.getElementById(id + "p").remove();
 	document.getElementById(id).remove();
 	var arrayIndex = id.substring(4)-1;
-	console.log(arrayIndex);
+	//console.log(arrayIndex);
 	myArray.splice(arrayIndex,1);
 	refresh();
 }
@@ -87,15 +87,16 @@ function edit(btn){
 	document.getElementById(id + "Del").remove();
 	document.getElementById(id + "Edi").remove(); 
 	textbox.setAttribute("type", 'text');
-	textbox.setAttribute("value", 'text');
-	textbox.setAttribute("Id", 'text');
+	var t = id.substring(4, id.length);
+	textbox.setAttribute("value", myArray[t-1]);
+	textbox.setAttribute("id", 'text');
 	var submitbutton = document.createElement("input");
 	submitbutton.setAttribute("type", 'button');
 	submitbutton.setAttribute("value", 'Ok');
 	submitbutton.setAttribute("name", 'button');
-	submitbutton.setAttribute("id", 'btnSubmit');
-	console.log(id);
-	submitbutton.setAttribute("onClick", "submit(id, true)")
+	submitbutton.setAttribute("id", id);
+	//console.log(id);
+	submitbutton.setAttribute("onClick", "submit(this, true)")
 	//Append the elements in page (in span).
 	li.appendChild(textbox);
 	li.appendChild(submitbutton);
@@ -104,31 +105,57 @@ function edit(btn){
 }
 function submit(length, editing){
 	var editB = editing;
-	console.log(editB);
+	//console.log(length);
 	var item;
-	var lenghtA;
+	var lengthA;
+	var li;
 	//console.log(lengthA);
 	var index;
 	if (length==null){
 		lengthA = myArray.length+1
 		index="item" + lengthA;
 		item = document. createTextNode(document.getElementById('text').value + ' ');
-		myArray.push(item)
+		var itemString = document.getElementById('text').value + ' ';
+		myArray.push(itemString);
 		place.appendChild(item);
 		place.setAttribute("id", index+"p");
+		li =document.getElementById(index);
 	}
 	else if(editing == true){
-		lenghtA=length;
-		index="item" + lengthA;
+		//when this happens it passes a button because id passes submit.id instead
+		//console.log(length.id);
+		lengthA=length.id;
+		index=lengthA;
+		//console.log(lengthA);
 		item = document. createTextNode(document.getElementById('text').value + ' ');
-		place = document.getElementById(index + "p");
+		length.setAttribute("id", "btnSubmit");
+		li =document.getElementById(index);
+		place = document.createElement("span");
+		place.setAttribute("id", index+"p");
+		li.appendChild(place);
+		place.appendChild(item);
+		var t = lengthA.substring(4, lengthA.length);
+		//console.log(t);
+		var arrayI= index.substring(4);
+		myArray.splice(arrayI-1,1,document.getElementById('text').value+ ' ');
+
+
+
+
+
+		//when clicking edit the text becoems text instead of vwhat was there before this should be fixed
 	}
 	else{
-		lengtha = length;
+		
+		var lengthA = length;
 		var info = myArray[lengthA-1];
-		item = document. createTextNode(info.data);
+		console.log(length);
+		console.log(info);
+		item = document. createTextNode(info);
+		index="item" +lengthA;
 		place.appendChild(item);
 		place.setAttribute("id", index+"p");
+		li =document.getElementById(index);
 	}
 	
 	var btnDone = document.createElement("input");
@@ -146,9 +173,8 @@ function submit(length, editing){
 	btnEdit.setAttribute("value", 'Edit');
 	btnEdit.setAttribute("name", 'btnEdit');
 	btnEdit.setAttribute("onClick", 'edit(this)');
-	console.log(index);
-	var li =document.getElementById(index);
-	console.log(li);
+	//console.log(index);
+	//console.log(li);
 	
 	btnDone.setAttribute("id", index + "Don");
 	btnDelete.setAttribute("id", index + "Del");
@@ -161,19 +187,21 @@ function submit(length, editing){
 		document.getElementById("btnSubmit").remove();
 		addNew();	
 	}
-	else if(editing == false){
+	else if(editing == true){
+		
 		text.remove();
 		document.getElementById("btnSubmit").remove();
+		place = document.getElementById("placeholder");
 	}
 		
 }
 var lengtha 
-function addbuttond(id){
+function addbuttond(){
 	//create new elements
 	var textbox = document.createElement("input");
 	textbox.setAttribute("type", 'text');
 	textbox.setAttribute("value", 'text');
-	textbox.setAttribute("Id", 'text');
+	textbox.setAttribute("id", 'text');
 	var submitbutton = document.createElement("input");
 	submitbutton.setAttribute("type", 'button');
 	submitbutton.setAttribute("value", 'Ok');
