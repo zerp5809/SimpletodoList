@@ -45,6 +45,7 @@ function refresh(){
 }
 function notDone(btn){
 	var id = btn.id;
+	document.getElementById(id+"Del").remove();
 	//console.log(id);
 	document.getElementById(id + "p").setAttribute("class", "notDone");
 	btnDone = document.createElement("Input");
@@ -53,11 +54,26 @@ function notDone(btn){
 	btnDone.setAttribute("value", 'Done');
 	btnDone.setAttribute("id", id + "Don");
 	document.getElementById(id + "p").appendChild(btnDone);
+	var btnDelete = document.createElement("input");
+	btnDelete.setAttribute("type", 'button');
+	btnDelete.setAttribute("value", 'Delete');
+	btnDelete.setAttribute("name", 'btnDelete')
+	btnDelete.setAttribute("id", id + "Del");
+	btnDelete.setAttribute("onClick", 'del(this)');
+	document.getElementById(id + "p").appendChild(btnDelete);
+	var btnEdit = document.createElement("input");
+	btnEdit.setAttribute("type", 'button');
+	btnEdit.setAttribute("value", 'Edit');
+	btnEdit.setAttribute("name", 'btnEdit');
+	btnEdit.setAttribute("onClick", 'edit(this)');
+	btnEdit.setAttribute("id", id + "Edi");
+	document.getElementById(id + "p").appendChild(btnEdit);
 	btn.remove();
 }
 function done(btn){
 	//console.log(btn);
 	var id = btn.id.substring(0,btn.id.indexOf('Don'));
+	//document.getElementById(id+"Del").remove();
 	//console.log(id);
 	document.getElementById(id + "p").setAttribute("class", "done");
 	var btnNotDone = document.createElement("Input");
@@ -68,6 +84,16 @@ function done(btn){
 	//console.log(id);
 	document.getElementById(id + "p").appendChild(btnNotDone);
 	btn.remove();
+	document.getElementById(id+"Edi").remove();
+	document.getElementById(id+"Del").remove();
+	var btnDelete = document.createElement("input");
+	btnDelete.setAttribute("type", 'button');
+	btnDelete.setAttribute("value", 'Delete');
+	btnDelete.setAttribute("name", 'btnDelete')
+	btnDelete.setAttribute("id", id + "Del");
+	btnDelete.setAttribute("onClick", 'del(this)');
+	document.getElementById(id + "p").appendChild(btnDelete);
+
 }
 function del(btn){
 	var id = btn.id.substring(0,btn.id.indexOf('Del'));
