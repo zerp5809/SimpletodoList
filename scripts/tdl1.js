@@ -3,6 +3,7 @@ var place = document.getElementById("placeholder");
 var container = document.getElementById("container");
 var myArray = new Array() 
 var list = document.getElementById("list");
+var editing;
 function addNew(){
 	var li = document.createElement("li"); 
 	list.appendChild(li);
@@ -50,12 +51,14 @@ function notDone(btn){
 	btnDone.setAttribute("type", 'button');
 	btnDone.setAttribute("onClick", 'done(this)');
 	btnDone.setAttribute("value", 'Done');
-	btnDone.setAttribute("id", id);
+	btnDone.setAttribute("id", id + "Don");
 	document.getElementById(id + "p").appendChild(btnDone);
 	btn.remove();
 }
 function done(btn){
-	var id = btn.id;
+	console.log(btn);
+	var id = btn.id.substring(0,btn.id.indexOf('Don'));
+	console.log(id);
 	document.getElementById(id + "p").setAttribute("class", "done");
 	var btnNotDone = document.createElement("Input");
 	btnNotDone.setAttribute("type", 'button');
@@ -67,7 +70,7 @@ function done(btn){
 	btn.remove();
 }
 function del(btn){
-	var id = btn.id;
+	var id = btn.id.substring(0,btn.id.indexOf('Del'));
 	document.getElementById(id + "p").remove();
 	document.getElementById(id).remove();
 	var arrayIndex = id.substring(4)-1;
@@ -76,8 +79,7 @@ function del(btn){
 	refresh();
 }
 function edit(btn){
-	var edit = true;
-	var id = btn.id;
+	var id = btn.id.substring(0,btn.id.indexOf('Edi'));
 	var text = document.getElementById(id + "p");
 	var textbox = document.createElement("input");
 	var li = document.getElementById(id);
@@ -92,34 +94,41 @@ function edit(btn){
 	submitbutton.setAttribute("value", 'Ok');
 	submitbutton.setAttribute("name", 'button');
 	submitbutton.setAttribute("id", 'btnSubmit');
-	submitbutton.setAttribute("onClick", "submit(id, edit)")
+	console.log(id);
+	submitbutton.setAttribute("onClick", "submit(id, true)")
 	//Append the elements in page (in span).
 	li.appendChild(textbox);
 	li.appendChild(submitbutton);
 	text.remove();
 
 }
-function submit(length, edit){
-	edit = this.edit;
+function submit(length, editing){
+	var editB = editing;
+	console.log(editB);
 	var item;
-	var lengtha = length;
-	var index="item" + lengtha;
+	var lenghtA;
+	//console.log(lengthA);
+	var index;
 	if (length==null){
-		lengtha = myArray.length+1
-		index="item" + lengtha;
+		lengthA = myArray.length+1
+		index="item" + lengthA;
 		item = document. createTextNode(document.getElementById('text').value + ' ');
 		myArray.push(item)
 		place.appendChild(item);
+		place.setAttribute("id", index+"p");
 	}
-	else if(edit == true){
+	else if(editing == true){
+		lenghtA=length;
+		index="item" + lengthA;
 		item = document. createTextNode(document.getElementById('text').value + ' ');
 		place = document.getElementById(index + "p");
 	}
 	else{
-		var arrayI = lengtha-1;
-		var info = myArray[lengtha-1];
+		lengtha = length;
+		var info = myArray[lengthA-1];
 		item = document. createTextNode(info.data);
 		place.appendChild(item);
+		place.setAttribute("id", index+"p");
 	}
 	
 	var btnDone = document.createElement("input");
@@ -140,17 +149,21 @@ function submit(length, edit){
 	console.log(index);
 	var li =document.getElementById(index);
 	console.log(li);
-	place.setAttribute("id", index+"p");
+	
 	btnDone.setAttribute("id", index + "Don");
 	btnDelete.setAttribute("id", index + "Del");
 	btnEdit.setAttribute("id", index + "Edi");
 	li.appendChild(btnDone);
 	li.appendChild(btnDelete);
 	li.appendChild(btnEdit);
-	if (info == null){	
+	if (length == null && info == null){	
 		text.remove();
 		document.getElementById("btnSubmit").remove();
 		addNew();	
+	}
+	else if(editing == false){
+		text.remove();
+		document.getElementById("btnSubmit").remove();
 	}
 		
 }
