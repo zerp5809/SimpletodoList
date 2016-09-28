@@ -126,7 +126,7 @@ function edit(btn){
 	document.getElementById(id + "Edi").remove(); 
 	textbox.setAttribute("type", 'text');
 	var t = id.substring(4, id.length);
-	textbox.setAttribute("value", myArray[t-1]);
+	textbox.setAttribute("value", myArray[t-1].item);
 	textbox.setAttribute("id", 'text');
 	var submitbutton = document.createElement("input");
 	submitbutton.setAttribute("type", 'button');
@@ -191,6 +191,7 @@ function submit(length, editing){
 			index=lengthA;
 			//console.log(lengthA);
 			item = document. createTextNode(document.getElementById('text').value);
+			var itemString = document.getElementById('text').value;
 			length.setAttribute("id", "btnSubmit");
 			li =document.getElementById(index);
 			place = document.createElement("span");
