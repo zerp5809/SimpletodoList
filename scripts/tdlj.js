@@ -47,6 +47,8 @@ function refresh(){
 function notDone(btn){
 	var id = btn.id;
 	document.getElementById(id+"Del").remove();
+	var idNum = id.substring(4, id.length);
+	myArray[idNum-1].status = "notdone";
 	//console.log(id);
 	document.getElementById(id + "p").setAttribute("class", "notDone");
 	btnDone = document.createElement("Input");
@@ -75,6 +77,9 @@ function notDone(btn){
 function done(btn){
 	//console.log(btn);
 	var id = btn.id.substring(0,btn.id.indexOf('Don'));
+	var idNum = id.substring(4, id.length);
+	console.log(idNum);
+	myArray[idNum-1].status = "done";
 	//document.getElementById(id+"Del").remove();
 	//console.log(id);
 	document.getElementById(id + "p").setAttribute("class", "done");
@@ -156,6 +161,7 @@ function submit(length, editing){
 	var item;
 	var lengthA;
 	var li;
+	var isDone= false;
 	//console.log(lengthA);
 	var index;
 	if (length==null){
@@ -167,10 +173,11 @@ function submit(length, editing){
 			index="item" + lengthA;
 			item = document. createTextNode(document.getElementById('text').value);
 			var itemString = document.getElementById('text').value;
-			myArray.push(itemString);
+			myArray.push({"item": itemString, "status":"notdone"});
 			place.appendChild(item);
 			place.setAttribute("id", index+"p");
 			li =document.getElementById(index);
+			console.log(1);
 		}
 	}
 	else if(editing == true){
@@ -193,8 +200,9 @@ function submit(length, editing){
 			var t = lengthA.substring(4, lengthA.length);
 			//console.log(t);
 			var arrayI= index.substring(4);
-			myArray.splice(arrayI-1,1,document.getElementById('text').value);
+			myArray.splice(arrayI-1,1,{"item": itemString, "status":"notdone"});
 			addButton.setAttribute("onClick", "addbuttond()");
+			console.log(2);
 		}
 
 
@@ -203,9 +211,8 @@ function submit(length, editing){
 			//when clicking edit the text becoems text instead of vwhat was there before this should be fixed
 	}
 	else{
-		
 		var lengthA = length;
-		var info = myArray[lengthA-1];
+		var info = myArray[lengthA-1].item;
 		//console.log(length);
 		//console.log(info);
 		item = document. createTextNode(info);
@@ -213,56 +220,104 @@ function submit(length, editing){
 		place.appendChild(item);
 		place.setAttribute("id", index+"p");
 		li =document.getElementById(index);
+		if (myArray[lengthA-1].status == "done"){
+			isDone = true;
+			console.log("true!"); 
+		}
+		console.log(3);
 	}
-	
-	var btnDone = document.createElement("input");
-	btnDone.setAttribute("type", 'button');
-	btnDone.setAttribute("value", 'Done');
-	btnDone.setAttribute("name", 'btnDone');
-	btnDone.setAttribute("onClick", 'done(this)');
-	btnDone.setAttribute("class", "button");
-	var btnDelete = document.createElement("input");
-	btnDelete.setAttribute("type", 'button');
-	btnDelete.setAttribute("value", 'Delete');
-	btnDelete.setAttribute("name", 'btnDelete');
-	btnDelete.setAttribute("onClick", 'del(this)');
-	var btnEdit = document.createElement("input");
-	btnEdit.setAttribute("type", 'button');
-	btnEdit.setAttribute("value", 'Edit');
-	btnEdit.setAttribute("name", 'btnEdit');
-	btnEdit.setAttribute("onClick", 'edit(this)');
-	//console.log(index);
-	//console.log(li);
-	
-	btnDone.setAttribute("id", index + "Don");
-	btnDelete.setAttribute("id", index + "Del");
-	btnEdit.setAttribute("id", index + "Edi");
-	li.appendChild(btnDone);
-	li.appendChild(btnDelete);
-	li.appendChild(btnEdit);
-	if (length == null && info == null){	
-		text.remove();
-		document.getElementById("btnSubmit").remove();
-		addNew();	
-	}
-	else if(editing == true){
+	if (isDone == false ){
+		var btnDone = document.createElement("input");
+		btnDone.setAttribute("type", 'button');
+		btnDone.setAttribute("value", 'Done');
+		btnDone.setAttribute("name", 'btnDone');
+		btnDone.setAttribute("onClick", 'done(this)');
+		btnDone.setAttribute("class", "button");
+		var btnDelete = document.createElement("input");
+		btnDelete.setAttribute("type", 'button');
+		btnDelete.setAttribute("value", 'Delete');
+		btnDelete.setAttribute("name", 'btnDelete');
+		btnDelete.setAttribute("onClick", 'del(this)');
+		var btnEdit = document.createElement("input");
+		btnEdit.setAttribute("type", 'button');
+		btnEdit.setAttribute("value", 'Edit');
+		btnEdit.setAttribute("name", 'btnEdit');
+		btnEdit.setAttribute("onClick", 'edit(this)');
+		//console.log(index);
+		//console.log(li);
+		
+		btnDone.setAttribute("id", index + "Don");
+		btnDelete.setAttribute("id", index + "Del");
+		btnEdit.setAttribute("id", index + "Edi");
+		li.appendChild(btnDone);
+		li.appendChild(btnDelete);
+		li.appendChild(btnEdit);
+		if (length == null && info == null){	
+			text.remove();
+			document.getElementById("btnSubmit").remove();
+			addNew();	
+		}
+		else if(editing == true){
 
-		text.remove();
-		document.getElementById("btnSubmit").remove();
-		place = document.getElementById("placeholder");
-	}
-	var length = myArray.length;
-	var ediIndex;
-	if (length != 0 ){
-		for(var z = 1;  z<length+1; z++) {
-			ediIndex  = "item" + z + "Edi";
-			var noEdit = document.getElementById(ediIndex);
-			//console.log(ediIndex);
-			if (noEdit != null){
-				noEdit.setAttribute("onClick", "edit(this)");
+			text.remove();
+			document.getElementById("btnSubmit").remove();
+			place = document.getElementById("placeholder");
+		}
+		var length = myArray.length;
+		var ediIndex;
+		if (length != 0 ){
+			for(var z = 1;  z<length+1; z++) {
+				ediIndex  = "item" + z + "Edi";
+				var noEdit = document.getElementById(ediIndex);
+				//console.log(ediIndex);
+				if (noEdit != null){
+					noEdit.setAttribute("onClick", "edit(this)");
+				}
 			}
 		}
 	}
+	else if (isDone == true){
+		if (length == null && info == null){	
+			text.remove();
+			document.getElementById("btnSubmit").remove();
+			addNew();	
+		}
+		else if(editing == true){
+
+			text.remove();
+			document.getElementById("btnSubmit").remove();
+			place = document.getElementById("placeholder");
+		}
+		var length = myArray.length;
+		var ediIndex;
+		if (length != 0 ){
+			for(var z = 1;  z<length+1; z++) {
+				ediIndex  = "item" + z + "Edi";
+				var noEdit = document.getElementById(ediIndex);
+				//console.log(ediIndex);
+				if (noEdit != null){
+					noEdit.setAttribute("onClick", "edit(this)");
+				}
+			}
+		}
+		document.getElementById(index + "p").setAttribute("class", "done");
+		var btnNotDone = document.createElement("Input");
+		btnNotDone.setAttribute("type", 'button');
+		btnNotDone.setAttribute("onClick", 'notDone(this)');
+		btnNotDone.setAttribute("value", 'Not Done');
+		btnNotDone.setAttribute("id", index);
+		btnNotDone.setAttribute("class", "button");
+		//console.log(id);
+		document.getElementById(index + "p").appendChild(btnNotDone);
+		var btnDelete = document.createElement("input");
+		btnDelete.setAttribute("type", 'button');
+		btnDelete.setAttribute("value", 'Delete');
+		btnDelete.setAttribute("name", 'btnDelete')
+		btnDelete.setAttribute("id", index + "Del");
+		btnDelete.setAttribute("onClick", 'del(this)');
+		document.getElementById(index + "p").appendChild(btnDelete);
+	}
+	
 }
 var lengtha 
 function addbuttond(){
