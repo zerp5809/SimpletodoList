@@ -15,7 +15,7 @@ function addNew(){
 	addButton = document.createElement("input");
 	addButton.setAttribute("type", 'button');
 	addButton.setAttribute("value", 'Add');
-	addButton.setAttribute("name", 'button');
+	addButton.setAttribute("id", 'btnAdd');
 	addButton.setAttribute("onClick", 'addbuttond()');
 	place.appendChild(addButton);
 	
@@ -104,11 +104,15 @@ function del(btn){
 	myArray.splice(arrayIndex,1);
 	refresh();
 }
+function no(){
+	alert("Submit last entry frist!");
+}
 function edit(btn){
 	var id = btn.id.substring(0,btn.id.indexOf('Edi'));
 	var text = document.getElementById(id + "p");
 	var textbox = document.createElement("input");
 	var li = document.getElementById(id);
+	addButton.setAttribute("onClick", "no()");
 	document.getElementById(id + "Don").remove();
 	document.getElementById(id + "Del").remove();
 	document.getElementById(id + "Edi").remove(); 
@@ -127,6 +131,18 @@ function edit(btn){
 	li.appendChild(textbox);
 	li.appendChild(submitbutton);
 	text.remove();
+	var length = myArray.length;
+	var ediIndex;
+	if (length != 0 ){
+		for(var z = 1;  z<length+1; z++) {
+			ediIndex  = "item" + z + "Edi";
+			var noEdit = document.getElementById(ediIndex);
+			//console.log(ediIndex);
+			if (btn.id != ediIndex){
+				noEdit.setAttribute("onClick", "no()");
+			}
+		}
+	}
 
 }
 function submit(length, editing){
@@ -164,7 +180,7 @@ function submit(length, editing){
 		//console.log(t);
 		var arrayI= index.substring(4);
 		myArray.splice(arrayI-1,1,document.getElementById('text').value+ ' ');
-
+		addButton.setAttribute("onClick", "addbuttond()");
 
 
 
@@ -219,11 +235,31 @@ function submit(length, editing){
 		document.getElementById("btnSubmit").remove();
 		place = document.getElementById("placeholder");
 	}
+	var length = myArray.length;
+	var ediIndex;
+	if (length != 0 ){
+		for(var z = 1;  z<length+1; z++) {
+			ediIndex  = "item" + z + "Edi";
+			var noEdit = document.getElementById(ediIndex);
+			//console.log(ediIndex);
+			noEdit.setAttribute("onClick", "edit(this)");
+		}
+	}
 		
 }
 var lengtha 
 function addbuttond(){
 	//create new elements
+	var length = myArray.length;
+	var ediIndex;
+	if (length != 0 ){
+		for(var z = 1;  z<length+1; z++) {
+			ediIndex  = "item" + z + "Edi";
+			var noEdit = document.getElementById(ediIndex);
+			//console.log(ediIndex);
+			noEdit.setAttribute("onClick", "no()");
+		}
+	}
 	var textbox = document.createElement("input");
 	textbox.setAttribute("type", 'text');
 	textbox.setAttribute("value", 'text');
